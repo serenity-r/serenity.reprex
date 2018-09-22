@@ -3,6 +3,7 @@
 
 library(shiny)
 library(shinyWidgets)
+library(colourpicker)
 library(RColorBrewer)
 library(magrittr)
 
@@ -31,8 +32,16 @@ ui <- fluidPage(
                    `show-input` = TRUE,
                    `preferred-format` = "name")
   ),
-  verbatimTextOutput(outputId = "res")
-  
+  verbatimTextOutput(outputId = "res"),
+  colourInput(
+    inputId = "myColour",
+    label = "Pick a color:",
+    palette = "limited",
+    allowedCols = unique(colours_tbl$hex),
+    returnName = TRUE
+  ),
+  verbatimTextOutput(outputId = "res2"),
+  actionButton(inputId = "steve", label = "Picker")
 )
 
 server <- function(input, output, session) {
@@ -40,6 +49,13 @@ server <- function(input, output, session) {
   # Output the R colour names - can be multiples!  
   output$res <- renderPrint(dplyr::filter(colours_tbl, hex == toupper(input$myColor))$name)
   
+  output$res2 <- renderPrint(input$myColour)
+  
+  observeEvent(input$steve, {
+    command <- "colourPicker()"
+    rstudioapi::sendToConsole(command)
+    stopApp()
+  })
 }
 
 shinyApp(ui, server)
