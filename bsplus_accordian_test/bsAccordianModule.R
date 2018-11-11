@@ -15,4 +15,8 @@ bsAccordianInput <- function(id) {
 }
 
 bsAccordian <- function(input, output, session) {
+  callModule(module = bsSlider,
+             id = "steve")
+  callModule(module = bsSlider,
+             id = "fred")
 }
