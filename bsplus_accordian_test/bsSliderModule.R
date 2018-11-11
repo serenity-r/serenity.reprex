@@ -19,4 +19,10 @@ bsSlider <- function(input, output, session) {
   output$placeholder <- renderPrint({
     input$filter
   })
+  
+  valToCode <- reactive({
+    paste0('(', paste(input$filter, collapse = ", "), ')')
+  })
+  
+  return(valToCode)
 }
