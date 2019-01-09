@@ -16,13 +16,16 @@ fluidPage(
                                         three = "3",
                                         four = "4"),
                          presets = list(values = "one",
-                                        selected = "one"),
+                                        selected = "one",
+                                        locked = "one",
+                                        freeze = "one"),
                          selectable = TRUE,
-                         multivalued = TRUE)
+                         selectOnDrop = TRUE)
     ),
     column(6,
            uiOutput("item")
     )
   ),
-  verbatimTextOutput("parsed")
+  verbatimTextOutput("parsed"),
+  verbatimTextOutput("inputs")
 )

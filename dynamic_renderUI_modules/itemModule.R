@@ -8,10 +8,13 @@ itemInput <- function(id) {
   )
 }
 
-itemMod <- function(input, output, session) {
+itemMod <- function(input, output, session, item_change, one_values) {
   slider_names <- c("hair", "skin")
   
-  slider_modules <- unlist(map(slider_names, ~ callModule(module = itemOptionMod, id = .)))
+  slider_modules <- unlist(map(slider_names, ~ callModule(module = itemOptionMod, 
+                                                          id = .,
+                                                          item_change = item_change,
+                                                          one_values = one_values)))
   
   summary <- reactive({
     paste(map(slider_modules, ~ .()), collapse = " | ")

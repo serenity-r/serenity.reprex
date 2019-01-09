@@ -5,14 +5,16 @@ itemOptionInput <- function(id) {
     div(
       h3(id),
       # This HAS to be a uiOutput, as we need to use persistent inputs to seed the values
-      uiOutput(ns("trait"))
+      uiOutput(ns("trait")),
+      verbatimTextOutput(ns("one"))
     )
   )
 }
 
-itemOptionMod <- function(input, output, session) {
+itemOptionMod <- function(input, output, session, item_change, one_values) {
   output$trait <- renderUI({
     ns <- session$ns
+    item_change()
     
     # https://stackoverflow.com/questions/34801607/shiny-data-persistence-in-renderui
     # There's an extra complication in this example: note that the inputId is ns("trait"),
@@ -25,7 +27,15 @@ itemOptionMod <- function(input, output, session) {
                 label = "",
                 min = 0,
                 max = 1,
-                value = input$trait %||% 1)
+                value = isolate(input$trait) %||% 1)
+  })
+  
+  output$one <- renderText({
+    if (isTruthy(one_values)) {
+      paste("Hair 1:", one_values[["one-hair-trait"]](), "\n", "Skin 1:", one_values[["one-skin-trait"]](), "\n\n")
+    } else {
+      one_values
+    }
   })
   
   # Need to send reactives back
